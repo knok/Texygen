@@ -306,6 +306,8 @@ class Seqgan(Gan):
             with open(self.test_file, 'w') as outfile:
                 outfile.write(code_to_text(codes=codes, dictionary=dict))
 
+        # save
+        saver = tf.train.Saver()
         self.sess.run(tf.global_variables_initializer())
 
         self.pre_epoch_num = 80
@@ -354,6 +356,7 @@ class Seqgan(Gan):
                 generate_samples(self.sess, self.generator, self.batch_size, self.generate_num, self.generator_file)
                 get_real_test_file()
                 self.evaluate()
+                saver.save(self.sess, 'save/model.ckpt')
 
             self.reward.update_params()
             for _ in range(15):
